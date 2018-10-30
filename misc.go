@@ -1,6 +1,7 @@
 package config
 
 import (
+	"io"
 	"os"
 	"path/filepath"
 	"time"
@@ -10,31 +11,33 @@ import (
 	loggerPkg "github.com/lovego/logger"
 )
 
+var theLogger, theHttpLogger *loggerPkg.Logger
+
 var theAlarm = alarm.New(alarm.MailSender{
 	Receivers: Keepers(),
 	Mailer:    Mailer(),
 }, 0, 5*time.Second, 30*time.Second, alarm.SetPrefix(DeployName()))
-
-var theLogger = loggerPkg.New(os.Stderr)
-
-func init() {
-	theLogger.SetAlarm(theAlarm)
-	theLogger.SetMachineName()
-	if DevMode() {
-		theLogger.SetLevel(loggerPkg.Debug)
-	}
-}
-
-func DevMode() bool {
-	return os.Getenv(`GODEV`) == `true`
-}
 
 func Alarm() *alarm.Alarm {
 	return theAlarm
 }
 
 func Logger() *loggerPkg.Logger {
+	if theLogger == nil {
+		theLogger = NewLoggerFromWriter(os.Stderr)
+	}
 	return theLogger
+}
+
+func HttpLogger() *loggerPkg.Logger {
+	if theHttpLogger == nil {
+		if DevMode() {
+			theHttpLogger = NewLoggerFromWriter(os.Stdout)
+		} else {
+			theHttpLogger = NewLogger("http.log")
+		}
+	}
+	return theHttpLogger
 }
 
 func NewLogger(paths ...string) *loggerPkg.Logger {
@@ -44,16 +47,20 @@ func NewLogger(paths ...string) *loggerPkg.Logger {
 	if err != nil {
 		Logger().Fatal(err)
 	}
-	logger := loggerPkg.New(file)
+	return NewLoggerFromWriter(file)
+}
+
+func NewLoggerFromWriter(writer io.Writer) *loggerPkg.Logger {
+	logger := loggerPkg.New(writer)
 	logger.SetAlarm(Alarm())
 	logger.SetMachineName()
 	if DevMode() {
-		theLogger.SetLevel(loggerPkg.Debug)
+		logger.SetLevel(loggerPkg.Debug)
 	}
 	return logger
 }
 
 func Protect(fn func()) {
-	defer theLogger.Recover()
+	defer Logger().Recover()
 	fn()
 }

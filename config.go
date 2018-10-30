@@ -56,6 +56,10 @@ func Env() string {
 	return theEnv
 }
 
+func DevMode() bool {
+	return os.Getenv(`GODEV`) == `true`
+}
+
 func getMailer() *mailer.Mailer {
 	m, err := mailer.New(theConf.Mailer)
 	if err != nil {
