@@ -53,9 +53,12 @@ func NewLogger(paths ...string) *loggerPkg.Logger {
 func NewLoggerFromWriter(writer io.Writer) *loggerPkg.Logger {
 	logger := loggerPkg.New(writer)
 	logger.SetAlarm(Alarm())
-	logger.SetMachineName()
 	if DevMode() {
 		logger.SetLevel(loggerPkg.Debug)
+	} else {
+		logger.Set("project", Name())
+		logger.Set("env", Env())
+		logger.SetMachineName()
 	}
 	return logger
 }
