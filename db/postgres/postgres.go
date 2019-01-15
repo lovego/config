@@ -22,14 +22,14 @@ func DB(name string) *bsql.DB {
 	defer postgresDBs.Unlock()
 	db := postgresDBs.m[name]
 	if db == nil {
-		db = newDB(name)
+		db = NewDB(config.Get("postgres").GetString(name))
 		postgresDBs.m[name] = db
 	}
 	return db
 }
 
-func newDB(name string) *bsql.DB {
-	dbUrl := dburl.Parse(config.Get("postgres").GetString(name))
+func NewDB(dbAddr string) *bsql.DB {
+	dbUrl := dburl.Parse(dbAddr)
 	db, err := sql.Open("postgres", dbUrl.URL.String())
 	if err != nil {
 		log.Panic(err)
