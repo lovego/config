@@ -1,6 +1,9 @@
 package conf
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
 	"time"
 )
 
@@ -32,4 +35,15 @@ func (c *Conf) Url() string {
 	} else {
 		return "http://" + c.Domain
 	}
+}
+
+func (c *Conf) TimestampSign() (int64, string) {
+	return TimestampSign(c.Secret)
+}
+
+func TimestampSign(secret string) (int64, string) {
+	ts := time.Now().Unix()
+	bytes32 := sha256.Sum256([]byte(fmt.Sprintf("%d,%s", ts, secret)))
+	sign := hex.EncodeToString(bytes32[:])
+	return ts, sign
 }
