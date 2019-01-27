@@ -31,8 +31,8 @@ func Secret() string {
 	return theConf.Secret
 }
 
-func TimestampSign() (int64, string) {
-	return theConf.TimestampSign()
+func TimestampSign(timestamp int64) string {
+	return theConf.TimestampSign(timestamp)
 }
 
 func TimeZone() *time.Location {

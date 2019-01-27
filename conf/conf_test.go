@@ -3,7 +3,6 @@ package conf
 import "fmt"
 
 func ExampleTimestampSign() {
-	ts, sign := TimestampSign("abc")
-	fmt.Println(ts > 0, len(sign))
-	// Output: true 64
+	fmt.Println(TimestampSign(123, "abc"))
+	// Output: 21d9bfd0521686c89039b04bf66faf108c391e2334a371dfa51401c5e05a6e32
 }

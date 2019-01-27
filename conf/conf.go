@@ -37,13 +37,12 @@ func (c *Conf) Url() string {
 	}
 }
 
-func (c *Conf) TimestampSign() (int64, string) {
-	return TimestampSign(c.Secret)
+func (c *Conf) TimestampSign(ts int64) string {
+	return TimestampSign(ts, c.Secret)
 }
 
-func TimestampSign(secret string) (int64, string) {
-	ts := time.Now().Unix()
+func TimestampSign(ts int64, secret string) string {
 	bytes32 := sha256.Sum256([]byte(fmt.Sprintf("%d,%s", ts, secret)))
 	sign := hex.EncodeToString(bytes32[:])
-	return ts, sign
+	return sign
 }
