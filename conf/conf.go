@@ -13,11 +13,19 @@ type Conf struct {
 	Https  bool   `yaml:"https"`
 	Domain string `yaml:"domain"`
 	Secret string `yaml:"secret"`
+	Cookie Cookie `yaml:"cookie"`
 
 	Mailer       string   `yaml:"mailer"`
 	Keepers      []string `yaml:"keepers"`
 	TimeZone     timeZone `yaml:"timeZone"`
 	TimeLocation *time.Location
+}
+
+type Cookie struct {
+	Name   string `yaml:"name"`
+	Domain string `yaml:"domain"`
+	Path   string `yaml:"path"`
+	MaxAge int    `yaml:"maxAge"`
 }
 
 type timeZone struct {

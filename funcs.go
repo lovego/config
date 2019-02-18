@@ -3,6 +3,7 @@ package config
 import (
 	"time"
 
+	"github.com/lovego/config/conf"
 	"github.com/lovego/mailer"
 	"github.com/lovego/strmap"
 )
@@ -29,6 +30,10 @@ func Url() string {
 
 func Secret() string {
 	return theConf.Secret
+}
+
+func Cookie() conf.Cookie {
+	return theConf.Cookie
 }
 
 func TimestampSign(timestamp int64) string {
