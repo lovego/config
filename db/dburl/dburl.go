@@ -26,7 +26,7 @@ func Parse(str string) URL {
 		q.Del("maxIdle")
 		u.MaxIdle = parseInt(str)
 	} else if os.Getenv("GOENV") == "production" {
-		u.MaxIdle = 1
+		u.MaxIdle = 5
 	} else {
 		u.MaxIdle = 0
 	}
