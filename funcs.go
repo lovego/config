@@ -1,9 +1,9 @@
 package config
 
 import (
+	"net/http"
 	"time"
 
-	"github.com/lovego/config/conf"
 	"github.com/lovego/mailer"
 	"github.com/lovego/strmap"
 )
@@ -32,8 +32,13 @@ func Secret() string {
 	return theConf.Secret
 }
 
-func Cookie() conf.Cookie {
-	return theConf.Cookie
+func Cookie() *http.Cookie {
+	return &http.Cookie{
+		Name:   theConf.Cookie.Name,
+		Domain: theConf.Cookie.Domain,
+		Path:   theConf.Cookie.Path,
+		MaxAge: theConf.Cookie.MaxAge,
+	}
 }
 
 func TimestampSign(timestamp int64) string {
