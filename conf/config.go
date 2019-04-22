@@ -24,10 +24,12 @@ func Get(path string) *Config {
 		log.Fatalf("parse %s: %v", path, err)
 	}
 	for env, conf := range config.Envs {
-		conf.Name = config.Name
-		conf.Env = env
-		if conf.TimeZone.Name != `` {
-			conf.TimeLocation = time.FixedZone(conf.TimeZone.Name, conf.TimeZone.Offset)
+		if conf != nil {
+			conf.Name = config.Name
+			conf.Env = env
+			if conf.TimeZone.Name != `` {
+				conf.TimeLocation = time.FixedZone(conf.TimeZone.Name, conf.TimeZone.Offset)
+			}
 		}
 	}
 	return config
