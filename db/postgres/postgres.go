@@ -12,23 +12,28 @@ import (
 	"github.com/lovego/config/db/dburl"
 )
 
-var postgresDBs = struct {
+var dbs = struct {
 	sync.Mutex
 	m map[string]*bsql.DB
 }{m: make(map[string]*bsql.DB)}
 
 func DB(name string) *bsql.DB {
-	postgresDBs.Lock()
-	defer postgresDBs.Unlock()
-	db := postgresDBs.m[name]
+	return Get(config.Get("postgres").GetString(name))
+}
+
+func Get(dbAddr string) *bsql.DB {
+	dbs.Lock()
+	defer dbs.Unlock()
+
+	db := dbs.m[dbAddr]
 	if db == nil {
-		db = NewDB(config.Get("postgres").GetString(name))
-		postgresDBs.m[name] = db
+		db = New(dbAddr)
+		dbs.m[dbAddr] = db
 	}
 	return db
 }
 
-func NewDB(dbAddr string) *bsql.DB {
+func New(dbAddr string) *bsql.DB {
 	dbUrl := dburl.Parse(dbAddr)
 	db, err := sql.Open("postgres", dbUrl.URL.String())
 	if err != nil {

@@ -8,7 +8,7 @@ import (
 	"gopkg.in/mgo.v2"
 )
 
-var mongoSessions = struct {
+var dbs = struct {
 	m map[string]Sess
 	sync.Mutex
 }{
@@ -16,18 +16,27 @@ var mongoSessions = struct {
 }
 
 func Session(name string) Sess {
-	mongoSessions.Lock()
-	defer mongoSessions.Unlock()
-	sess, ok := mongoSessions.m[name]
+	return Get(config.Get(`mongo`).GetString(name))
+}
+
+func Get(dbAddr string) Sess {
+	dbs.Lock()
+	defer dbs.Unlock()
+
+	db, ok := dbs.m[dbAddr]
 	if !ok {
-		session, err := mgo.Dial(config.Get(`mongo`).GetString(name))
-		if err != nil {
-			log.Panic(err)
-		}
-		sess = Sess{session}
-		mongoSessions.m[name] = sess
+		db = New(dbAddr)
+		dbs.m[dbAddr] = db
 	}
-	return sess
+	return db
+}
+
+func New(dbAddr string) Sess {
+	session, err := mgo.Dial(dbAddr)
+	if err != nil {
+		log.Panic(err)
+	}
+	return Sess{session}
 }
 
 type Sess struct {
@@ -46,22 +55,22 @@ func (s Sess) Session(work func(*mgo.Session)) {
 	work(sess)
 }
 
+func (s Sess) DB(name string) DB {
+	return DB{s.s.DB(name)}
+}
+
 func (db DB) Session(work func(*mgo.Database)) {
 	sess := db.db.Session.Copy()
 	defer sess.Close()
 	work(db.db.With(sess))
 }
 
+func (db DB) C(name string) Coll {
+	return Coll{db.db.C(name)}
+}
+
 func (c Coll) Session(work func(*mgo.Collection)) {
 	sess := c.c.Database.Session.Copy()
 	defer sess.Close()
 	work(c.c.With(sess))
-}
-
-func (s Sess) DB(name string) DB {
-	return DB{s.s.DB(name)}
-}
-
-func (db DB) C(name string) Coll {
-	return Coll{db.db.C(name)}
 }

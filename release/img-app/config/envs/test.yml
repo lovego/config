@@ -1,0 +1,2 @@
+postgres:
+  test: postgres://postgres:@localhost/bsql_test?sslmode=disable

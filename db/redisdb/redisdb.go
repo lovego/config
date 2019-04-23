@@ -8,31 +8,35 @@ import (
 	"github.com/lovego/config"
 )
 
-var redisPools = struct {
+var dbs = struct {
 	sync.Mutex
 	m map[string]*redis.Pool
 }{m: make(map[string]*redis.Pool)}
 
 func Pool(name string) *redis.Pool {
-	redisPools.Lock()
-	defer redisPools.Unlock()
-	pool := redisPools.m[name]
-	if pool == nil {
-		pool = newPool(name)
-		redisPools.m[name] = pool
-	}
-	return pool
+	return Get(config.Get(`redis`).GetString(name))
 }
 
-func newPool(name string) *redis.Pool {
-	var url = config.Get(`redis`).GetString(name)
+func Get(dbAddr string) *redis.Pool {
+	dbs.Lock()
+	defer dbs.Unlock()
+
+	db := dbs.m[dbAddr]
+	if db == nil {
+		db = New(dbAddr)
+		dbs.m[dbAddr] = db
+	}
+	return db
+}
+
+func New(dbUrl string) *redis.Pool {
 	return &redis.Pool{
 		MaxIdle:     32,
 		MaxActive:   128,
 		IdleTimeout: 600 * time.Second,
 		Dial: func() (redis.Conn, error) {
 			return redis.DialURL(
-				url,
+				dbUrl,
 				redis.DialConnectTimeout(3*time.Second),
 				redis.DialReadTimeout(3*time.Second),
 				redis.DialWriteTimeout(3*time.Second),
