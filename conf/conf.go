@@ -33,6 +33,14 @@ type timeZone struct {
 	Offset int    `yaml:"offset"`
 }
 
+func (c *Conf) init(name, env string) {
+	c.Name = name
+	c.Env = env
+	if c.TimeZone.Name != `` {
+		c.TimeLocation = time.FixedZone(c.TimeZone.Name, c.TimeZone.Offset)
+	}
+}
+
 func (c *Conf) DeployName() string {
 	return c.Name + `-` + c.Env
 }

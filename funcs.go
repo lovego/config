@@ -1,9 +1,11 @@
 package config
 
 import (
+	"log"
 	"net/http"
 	"time"
 
+	"github.com/lovego/config/conf"
 	"github.com/lovego/mailer"
 	"github.com/lovego/strmap"
 )
@@ -59,6 +61,14 @@ func Mailer() *mailer.Mailer {
 
 func Get(key string) strmap.StrMap {
 	return theData.Get(key)
+}
+
+func GetDbConf(typ, key string) interface{} {
+	v, err := conf.GetDb(theData, typ, key)
+	if err != nil {
+		log.Panic(v)
+	}
+	return v
 }
 
 func GetSlice(key string) []strmap.StrMap {

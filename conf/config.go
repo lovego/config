@@ -3,7 +3,6 @@ package conf
 import (
 	"io/ioutil"
 	"log"
-	"time"
 
 	"gopkg.in/yaml.v2"
 )
@@ -25,11 +24,7 @@ func Get(path string) *Config {
 	}
 	for env, conf := range config.Envs {
 		if conf != nil {
-			conf.Name = config.Name
-			conf.Env = env
-			if conf.TimeZone.Name != `` {
-				conf.TimeLocation = time.FixedZone(conf.TimeZone.Name, conf.TimeZone.Offset)
-			}
+			conf.init(config.Name, env)
 		}
 	}
 	return config
