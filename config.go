@@ -60,6 +60,10 @@ func DevMode() bool {
 	return os.Getenv(`GODEV`) == `true`
 }
 
+func IsProduction() bool {
+	return Env() == `production`
+}
+
 func getMailer() *mailer.Mailer {
 	m, err := mailer.New(theConf.Mailer)
 	if err != nil {
