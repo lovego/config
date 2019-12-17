@@ -21,6 +21,7 @@ type Conf struct {
 	TimeLocation *time.Location
 }
 
+// If use http.Cookie, it has no yaml tags, upper camel case is required, so define a new one.
 type Cookie struct {
 	Name   string `yaml:"name"`
 	Domain string `yaml:"domain"`
