@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"net/http"
 	"time"
 )
 
@@ -62,4 +63,13 @@ func TimestampSign(ts int64, secret string) string {
 	bytes32 := sha256.Sum256([]byte(fmt.Sprintf("%d,%s", ts, secret)))
 	sign := hex.EncodeToString(bytes32[:])
 	return sign
+}
+
+func (c *Conf) HttpCookie() http.Cookie {
+	return http.Cookie{
+		Name:   c.Cookie.Name,
+		Domain: c.Cookie.Domain,
+		Path:   c.Cookie.Path,
+		MaxAge: c.Cookie.MaxAge,
+	}
 }
