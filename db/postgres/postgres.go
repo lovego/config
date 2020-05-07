@@ -34,10 +34,6 @@ func Get(dbAddr string) *bsql.DB {
 }
 
 func New(dbAddr string) *bsql.DB {
-	return NewWithTimeout(dbAddr, 5*time.Second)
-}
-
-func NewWithTimeout(dbAddr string, timeout time.Duration) *bsql.DB {
 	dbUrl := dburl.Parse(dbAddr)
 	db, err := sql.Open("postgres", dbUrl.URL.String())
 	if err != nil {
@@ -49,5 +45,5 @@ func NewWithTimeout(dbAddr string, timeout time.Duration) *bsql.DB {
 	db.SetMaxOpenConns(dbUrl.MaxOpen)
 	db.SetMaxIdleConns(dbUrl.MaxIdle)
 	db.SetConnMaxLifetime(dbUrl.MaxLife)
-	return bsql.New(db, timeout)
+	return bsql.New(db, 5*time.Second)
 }
