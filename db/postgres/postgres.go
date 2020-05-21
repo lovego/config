@@ -17,6 +17,10 @@ var dbs = struct {
 	m map[string]*bsql.DB
 }{m: make(map[string]*bsql.DB)}
 
+func DefaultDB() *bsql.DB {
+	return Get("default")
+}
+
 func DB(name string) *bsql.DB {
 	return Get(config.Get("postgres").GetString(name))
 }
