@@ -24,10 +24,10 @@ type Conf struct {
 
 // If use http.Cookie, it has no yaml tags, upper camel case is required, so define a new one.
 type Cookie struct {
-	Name   string `yaml:"name"`
-	Domain string `yaml:"domain"`
-	Path   string `yaml:"path"`
-	MaxAge int    `yaml:"maxAge"`
+	Name   string   `yaml:"name"`
+	Domain string   `yaml:"domain"`
+	Path   string   `yaml:"path"`
+	MaxAge Duration `yaml:"maxAge"`
 }
 
 type timeZone struct {
@@ -70,6 +70,6 @@ func (c *Conf) HttpCookie() http.Cookie {
 		Name:   c.Cookie.Name,
 		Domain: c.Cookie.Domain,
 		Path:   c.Cookie.Path,
-		MaxAge: c.Cookie.MaxAge,
+		MaxAge: int(c.Cookie.MaxAge),
 	}
 }

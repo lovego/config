@@ -34,13 +34,8 @@ func Secret() string {
 	return theConf.Secret
 }
 
-func Cookie() *http.Cookie {
-	return &http.Cookie{
-		Name:   theConf.Cookie.Name,
-		Domain: theConf.Cookie.Domain,
-		Path:   theConf.Cookie.Path,
-		MaxAge: theConf.Cookie.MaxAge,
-	}
+func Cookie() http.Cookie {
+	return theConf.HttpCookie()
 }
 
 func TimestampSign(timestamp int64) string {
