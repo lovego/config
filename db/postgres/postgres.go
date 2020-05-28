@@ -18,7 +18,7 @@ var dbs = struct {
 }{m: make(map[string]*bsql.DB)}
 
 func DefaultDB() *bsql.DB {
-	return Get("default")
+	return DB("default")
 }
 
 func DB(name string) *bsql.DB {
