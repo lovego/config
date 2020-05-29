@@ -16,7 +16,7 @@ var theLogger, theHttpLogger *loggerPkg.Logger
 var theAlarm = alarm.New(alarm.MailSender{
 	Receivers: Keepers(),
 	Mailer:    Mailer(),
-}, 0, 5*time.Second, 30*time.Second, alarm.SetPrefix(DeployName()))
+}, 0, 10*time.Second, time.Minute, alarm.SetPrefix(DeployName()))
 
 func Alarm() *alarm.Alarm {
 	return theAlarm
