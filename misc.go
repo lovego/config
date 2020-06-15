@@ -58,7 +58,6 @@ func NewLoggerFromWriter(writer io.Writer) *loggerPkg.Logger {
 	} else {
 		logger.Set("project", Name())
 		logger.Set("env", Env())
-		logger.SetMachineName()
 	}
 	return logger
 }
