@@ -44,7 +44,7 @@ func Root() string {
 
 func Env() string {
 	if theEnv == `` {
-		theEnv = os.Getenv(`GOENV`)
+		theEnv = os.Getenv(`GoEnv`)
 		if theEnv == `` {
 			if strings.HasSuffix(os.Args[0], `.test`) {
 				theEnv = `test`
