@@ -1,10 +1,10 @@
 # config 
 config with a conventional directory structure.
 
-[![Build Status](https://travis-ci.org/lovego/config.svg?branch=master)](https://travis-ci.org/lovego/config)
-[![Coverage Status](https://img.shields.io/coveralls/github/lovego/config/master.svg)](https://coveralls.io/github/lovego/config?branch=master)
+[![Build Status](https://github.com/lovego/config/actions/workflows/go.yml/badge.svg)](https://github.com/lovego/config/actions/workflows/go.yml)
+[![Coverage Status](https://coveralls.io/repos/github/lovego/config/badge.svg?branch=master)](https://coveralls.io/github/lovego/config)
 [![Go Report Card](https://goreportcard.com/badge/github.com/lovego/config)](https://goreportcard.com/report/github.com/lovego/config)
-[![GoDoc](https://godoc.org/github.com/lovego/config?status.svg)](https://godoc.org/github.com/lovego/config)
+[![Documentation](https://pkg.go.dev/badge/github.com/lovego/config)](https://pkg.go.dev/github.com/lovego/config@v0.0.2)
 
 ## Install
 `$ go get github.com/lovego/config`
