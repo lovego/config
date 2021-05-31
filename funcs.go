@@ -58,8 +58,8 @@ func Get(key string) strmap.StrMap {
 	return theData.Get(key)
 }
 
-func GetDbConf(typ, key string) interface{} {
-	v, err := conf.GetDb(theData, typ, key)
+func GetDBConf(typ, key string) interface{} {
+	v, err := conf.GetDB(theData, typ, key)
 	if err != nil {
 		log.Panic(v)
 	}

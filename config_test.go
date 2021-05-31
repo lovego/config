@@ -7,7 +7,7 @@ import (
 
 func ExampleRoot() {
 	root := Root()
-	fmt.Println(strings.HasSuffix(root, "/github.com/lovego/config/release/img-app"))
+	fmt.Println(strings.HasSuffix(root, "/config/release/img-app"))
 
 	// Output: true
 }

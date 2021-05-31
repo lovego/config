@@ -7,7 +7,7 @@ import (
 	"github.com/lovego/strmap"
 )
 
-func GetDb(configMap strmap.StrMap, typ, key string) (interface{}, error) {
+func GetDB(configMap strmap.StrMap, typ, key string) (interface{}, error) {
 	v, ok := configMap.Get(typ)[key]
 	if !ok {
 		return nil, fmt.Errorf("db config `%s.%s` not found.", typ, key)

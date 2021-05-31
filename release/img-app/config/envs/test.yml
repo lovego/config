@@ -1,5 +1,5 @@
 postgres:
-  test: postgres://postgres:@localhost/test?sslmode=disable
+  test: postgres://postgres:postgres@localhost/postgres?sslmode=disable
   shards:
     1: postgres://postgres:@localhost/test_1?sslmode=disable
     2: postgres://postgres:@localhost/test_2?sslmode=disable
