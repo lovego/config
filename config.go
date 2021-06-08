@@ -57,7 +57,7 @@ func Env() string {
 }
 
 func DevMode() bool {
-	return os.Getenv(`GODEV`) == `true`
+	return os.Getenv(`ProDEV`) == `true`
 }
 
 func IsProduction() bool {
