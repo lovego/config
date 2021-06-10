@@ -1,5 +1,3 @@
-bou.ke/monkey v1.0.2 h1:kWcnsrCNUatbxncxR/ThdYqbytgOIArtYWqcQLQzKLI=
-bou.ke/monkey v1.0.2/go.mod h1:OqickVX3tNx6t33n1xvtTtu85YN5s6cKwVug+oHMaIA=
 github.com/bitly/go-hostpool v0.0.0-20171023180738-a3a6125de932 h1:mXoPYz/Ul5HYEDvkta6I8/rnYM5gSdSV2tJ6XbZuEtY=
 github.com/bitly/go-hostpool v0.0.0-20171023180738-a3a6125de932/go.mod h1:NOuUCSz6Q9T7+igc/hlvDOUdtWKryOrtFyIVABv/p7k=
 github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869 h1:DDGfHa7BWjL4YnC6+E63dPcxHo2sUxDIu8g3QgEJdRY=
@@ -41,15 +39,15 @@ github.com/lovego/duration v0.0.0-20200802140436-42c773e4fb38 h1:CMDJi86iyRiMnxt
 github.com/lovego/duration v0.0.0-20200802140436-42c773e4fb38/go.mod h1:zWeN/5zaL2SMyp1FLYjJ4zf8el6OXmcvbj0ydMEnIb8=
 github.com/lovego/email v0.0.0-20181113135931-957ba59faf49 h1:vz7dt13N+klA53obPURXYBJF+7uC0kQXOJcwQUZ2HKg=
 github.com/lovego/email v0.0.0-20181113135931-957ba59faf49/go.mod h1:q2TS9lGI+TrKIQBaPwC6skyk9WhYBb9RrNXNib+T9L4=
-github.com/lovego/errs v0.0.0-20200914124519-002655aaf593 h1:r7226H6FsObjjedOSIVC8iF0ueJBObYsF8oukgAQ6m0=
 github.com/lovego/errs v0.0.0-20200914124519-002655aaf593/go.mod h1:FfIOS6S5g1NZl4X4jGnY5DifiOaKOpv4N9wZXUKej8k=
+github.com/lovego/errs v0.0.2 h1:T2ZMIaSvfH/H66Twea/xX9UA/hfeqQkzvftrce/RgJY=
+github.com/lovego/errs v0.0.2/go.mod h1:ghGAxm7RQySjaQ7+H0qWei20i/KcIGsyD4XZnj4tK/0=
 github.com/lovego/fs v0.0.2 h1:hmSCMqssKHUpuKniRAd0GapY9706AeRT+LrMSihO3sg=
 github.com/lovego/fs v0.0.2/go.mod h1:rn6mRqNaC3noNNdckmOH0h9uvcka9JNvk1KbgZyh47Q=
-github.com/lovego/logger v0.0.0-20200804041111-ab21de5d5a74 h1:rj+TqKUL0gV7EKww+ZN/PYYlMR62SZCX0qFrkVyWLSc=
-github.com/lovego/logger v0.0.0-20200804041111-ab21de5d5a74/go.mod h1:uAHp76Nknc9tJbA2XKYQCUYqQR82udPAItcs/BtQDn4=
+github.com/lovego/logger v0.0.1 h1:Sr4eR74YFgrUtoMvWV2Jn64pi9YfcjGC6a6uXv91Qkk=
+github.com/lovego/logger v0.0.1/go.mod h1:4sDufT6c2yWdlUEIeiS1ivN8pIfVARiLRoqW4/TuPUg=
 github.com/lovego/mailer v0.0.0-20181030105104-b930eb59d311 h1:ezqfHwd5I/6efoSscnWMgdmOxdmhAKcxFQKlt26SN/s=
 github.com/lovego/mailer v0.0.0-20181030105104-b930eb59d311/go.mod h1:SirVYZ97CvkscOWfTkqtcKn+HJwJ/gpk14mSh7SSn2U=
-github.com/lovego/maps v0.0.0-20190404131308-5c14106deb1f h1:ddyIZqaD9In5hDtB5eDgUr04JjBp0cpN3XPzS22kREc=
 github.com/lovego/maps v0.0.0-20190404131308-5c14106deb1f/go.mod h1:7hsF4cgdpLGo+c6/0bQAKi14FnRIqmFu2bfAHKdQuG8=
 github.com/lovego/strmap v0.0.0-20190329135032-007683ae22da h1:zV482aLxLxg03sPTrhySYXN/HO43os4uznnyrhXr7ok=
 github.com/lovego/strmap v0.0.0-20190329135032-007683ae22da/go.mod h1:oVx+EwWDDNWwGXrfEuzvPbHi3DO8tYU5EfT5nXzfU/o=
@@ -57,8 +55,9 @@ github.com/lovego/struct_tag v0.0.0-20200821111615-1a11055a2d31 h1:ivs6MCONAgAxV
 github.com/lovego/struct_tag v0.0.0-20200821111615-1a11055a2d31/go.mod h1:2Y5edfo2L39OxqqJqk0w67T136Njegcfi6YeOCbEkng=
 github.com/lovego/structs v0.0.0-20210207031546-7db08510750d h1:jSrxw9x99zDZ5OLp63KVqw4oFMg5+/NS9dZumaDPJF8=
 github.com/lovego/structs v0.0.0-20210207031546-7db08510750d/go.mod h1:pQsJc6Te//8NDwEMvPHjB6o25Ghr8ahkxtxwHtpKkIM=
-github.com/lovego/tracer v0.0.0-20200207073659-f9fecb73b19f h1:ojEisTS/YwLIB82lLXE62LqIDAreD37kFJdg9b+Olmc=
 github.com/lovego/tracer v0.0.0-20200207073659-f9fecb73b19f/go.mod h1:aKGpzdC+2JKu/90fy95JH9Ndaske6mVUEpwMW6rsvMo=
+github.com/lovego/tracer v0.0.1 h1:NAggoG9bu9JrgSFOUPmZBmshmT7myOFAIy1zWeNNt9o=
+github.com/lovego/tracer v0.0.1/go.mod h1:cqfr/BqdkspXnph/SO8AOt58d+ziUGEzzM3OXMtI0rc=
 github.com/mattn/go-colorable v0.1.8 h1:c1ghPdyEDarC70ftn0y+A/Ee++9zz8ljHG1b13eJ0s8=
 github.com/mattn/go-colorable v0.1.8/go.mod h1:u6P/XSegPjTcexA+o6vUJrdnUu04hMope9wVRipJSqc=
 github.com/mattn/go-isatty v0.0.12 h1:wuysRhFDzyxgEmMf5xjvJ2M9dZoWAXNNr5LSBS7uHXY=

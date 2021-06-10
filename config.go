@@ -1,73 +1,51 @@
 package config
 
 import (
-	"log"
-	"os"
+	"net/http"
 	"path/filepath"
-	"strings"
+	"time"
 
-	"github.com/lovego/config/conf"
-	"github.com/lovego/fs"
-	"github.com/lovego/mailer"
+	"github.com/lovego/config/config"
 )
 
-var theConf = conf.Get(filepath.Join(Root(), `config/config.yml`)).Get(Env())
-var theData = conf.Data(filepath.Join(Root(), `config/envs/`+Env()+`.yml`))
-var theMailer = getMailer()
+var theConfig = config.Get(filepath.Join(Dir(), `config.yml`), Env().Major()).Get(Env().String())
 
-var theRoot string
-var theEnv string
-
-func Root() string {
-	if theRoot == `` {
-		program, err := filepath.Abs(os.Args[0])
-		if err != nil {
-			log.Panic(err)
-		}
-		if dir := filepath.Dir(program); fs.Exist(filepath.Join(dir, `config/config.yml`)) {
-			theRoot = dir
-		} else {
-			cwd, err := os.Getwd()
-			if err != nil {
-				log.Panic(err)
-			}
-			projectDir := fs.DetectDir(cwd, `release/img-app/config/config.yml`)
-			if projectDir != `` {
-				theRoot = filepath.Join(projectDir, `release/img-app`)
-			} else {
-				log.Panic(`app root not found.`)
-			}
-		}
-	}
-	return theRoot
+func Name() string {
+	return theConfig.Name
 }
 
-func Env() string {
-	if theEnv == `` {
-		theEnv = os.Getenv(`ProENV`)
-		if theEnv == `` {
-			if strings.HasSuffix(os.Args[0], `.test`) {
-				theEnv = `test`
-			} else {
-				theEnv = `dev`
-			}
-		}
-	}
-	return theEnv
+func DeployName() string {
+	return theConfig.DeployName()
 }
 
-func DevMode() bool {
-	return os.Getenv(`ProDEV`) == `true`
+func Https() bool {
+	return theConfig.Https
 }
 
-func IsProduction() bool {
-	return Env() == `production`
+func Domain() string {
+	return theConfig.Domain
 }
 
-func getMailer() *mailer.Mailer {
-	m, err := mailer.New(theConf.Mailer)
-	if err != nil {
-		panic(err)
-	}
-	return m
+func Url() string {
+	return theConfig.Url()
+}
+
+func Secret() string {
+	return theConfig.Secret
+}
+
+func Cookie() http.Cookie {
+	return theConfig.HttpCookie()
+}
+
+func TimestampSign(timestamp int64) string {
+	return theConfig.TimestampSign(timestamp)
+}
+
+func TimeZone() *time.Location {
+	return theConfig.TimeLocation
+}
+
+func Keepers() []string {
+	return theConfig.Keepers
 }

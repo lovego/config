@@ -1,4 +1,4 @@
-package conf
+package config
 
 import (
 	"crypto/sha256"
@@ -10,13 +10,13 @@ import (
 	"github.com/lovego/duration"
 )
 
-type Conf struct {
-	Name   string `yaml:"-"`
-	Env    string `yaml:"-"`
-	Https  bool   `yaml:"https"`
-	Domain string `yaml:"domain"`
-	Secret string `yaml:"secret"`
-	Cookie Cookie `yaml:"cookie"`
+type EnvConfig struct {
+	Name   string      `yaml:"-"`
+	Env    Environment `yaml:"-"`
+	Https  bool        `yaml:"https"`
+	Domain string      `yaml:"domain"`
+	Secret string      `yaml:"secret"`
+	Cookie Cookie      `yaml:"cookie"`
 
 	Mailer       string   `yaml:"mailer"`
 	Keepers      []string `yaml:"keepers"`
@@ -37,19 +37,19 @@ type timeZone struct {
 	Offset int    `yaml:"offset"`
 }
 
-func (c *Conf) init(name, env string) {
+func (c *EnvConfig) init(name, env string) {
 	c.Name = name
-	c.Env = env
+	c.Env = NewEnv(env)
 	if c.TimeZone.Name != `` {
 		c.TimeLocation = time.FixedZone(c.TimeZone.Name, c.TimeZone.Offset)
 	}
 }
 
-func (c *Conf) DeployName() string {
-	return c.Name + `-` + c.Env
+func (c *EnvConfig) DeployName() string {
+	return c.Name + `.` + c.Env.String()
 }
 
-func (c *Conf) Url() string {
+func (c *EnvConfig) Url() string {
 	if c.Https {
 		return "https://" + c.Domain
 	} else {
@@ -57,7 +57,7 @@ func (c *Conf) Url() string {
 	}
 }
 
-func (c *Conf) TimestampSign(ts int64) string {
+func (c *EnvConfig) TimestampSign(ts int64) string {
 	return TimestampSign(ts, c.Secret)
 }
 
@@ -67,7 +67,7 @@ func TimestampSign(ts int64, secret string) string {
 	return sign
 }
 
-func (c *Conf) HttpCookie() http.Cookie {
+func (c *EnvConfig) HttpCookie() http.Cookie {
 	return http.Cookie{
 		Name:   c.Cookie.Name,
 		Domain: c.Cookie.Domain,

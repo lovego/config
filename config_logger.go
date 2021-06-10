@@ -2,6 +2,7 @@ package config
 
 import (
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"time"
@@ -9,15 +10,18 @@ import (
 	"github.com/lovego/alarm"
 	"github.com/lovego/fs"
 	loggerPkg "github.com/lovego/logger"
+	"github.com/lovego/mailer"
 )
 
+const isRun = "isRun"
+
+var theMailer = getMailer()
+var theAlarm = getAlarm()
 var theLogger, theHttpLogger *loggerPkg.Logger
 
-var theAlarm = alarm.New(alarm.MailSender{
-	Receivers: Keepers(),
-	Mailer:    Mailer(),
-}, 0, 10*time.Second, time.Minute, alarm.SetPrefix(DeployName()))
-
+func Mailer() *mailer.Mailer {
+	return theMailer
+}
 func Alarm() *alarm.Alarm {
 	return theAlarm
 }
@@ -31,7 +35,7 @@ func Logger() *loggerPkg.Logger {
 
 func HttpLogger() *loggerPkg.Logger {
 	if theHttpLogger == nil {
-		if DevMode() {
+		if os.Getenv(isRun) != `` {
 			theHttpLogger = NewLoggerFromWriter(os.Stdout)
 		} else {
 			theHttpLogger = NewLogger("http.log")
@@ -53,7 +57,7 @@ func NewLogger(paths ...string) *loggerPkg.Logger {
 func NewLoggerFromWriter(writer io.Writer) *loggerPkg.Logger {
 	logger := loggerPkg.New(writer)
 	logger.SetAlarm(Alarm())
-	if DevMode() {
+	if os.Getenv(isRun) != `` {
 		logger.SetLevel(loggerPkg.Debug)
 	} else {
 		logger.Set("project", Name())
@@ -65,4 +69,18 @@ func NewLoggerFromWriter(writer io.Writer) *loggerPkg.Logger {
 func Protect(fn func()) {
 	defer Logger().Recover()
 	fn()
+}
+
+func getMailer() *mailer.Mailer {
+	m, err := mailer.New(theConfig.Mailer)
+	if err != nil {
+		log.Panic(err)
+	}
+	return m
+}
+func getAlarm() *alarm.Alarm {
+	return alarm.New(alarm.MailSender{
+		Receivers: Keepers(),
+		Mailer:    Mailer(),
+	}, 0, 10*time.Second, time.Minute, alarm.SetPrefix(DeployName()))
 }
