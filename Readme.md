@@ -9,6 +9,3 @@ config with a conventional directory structure.
 ## Install
 `$ go get github.com/lovego/config`
 
-## Documentation
-[https://godoc.org/github.com/lovego/config](https://godoc.org/github.com/lovego/config)
-
