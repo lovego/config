@@ -5,18 +5,18 @@ import (
 	"encoding/hex"
 	"fmt"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/lovego/duration"
 )
 
 type EnvConfig struct {
-	Name   string      `yaml:"-"`
-	Env    Environment `yaml:"-"`
-	Https  bool        `yaml:"https"`
-	Domain string      `yaml:"domain"`
-	Secret string      `yaml:"secret"`
-	Cookie Cookie      `yaml:"cookie"`
+	Name        string      `yaml:"-"`
+	Env         Environment `yaml:"-"`
+	ExternalURL url.URL     `yaml:"externalURL"`
+	Secret      string      `yaml:"secret"`
+	Cookie      Cookie      `yaml:"cookie"`
 
 	Mailer       string   `yaml:"mailer"`
 	Keepers      []string `yaml:"keepers"`
@@ -47,14 +47,6 @@ func (c *EnvConfig) init(name, env string) {
 
 func (c *EnvConfig) DeployName() string {
 	return c.Name + `.` + c.Env.String()
-}
-
-func (c *EnvConfig) Url() string {
-	if c.Https {
-		return "https://" + c.Domain
-	} else {
-		return "http://" + c.Domain
-	}
 }
 
 func (c *EnvConfig) TimestampSign(ts int64) string {

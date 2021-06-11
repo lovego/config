@@ -2,6 +2,7 @@ package config
 
 import (
 	"net/http"
+	"net/url"
 	"path/filepath"
 	"time"
 
@@ -18,16 +19,8 @@ func DeployName() string {
 	return theConfig.DeployName()
 }
 
-func Https() bool {
-	return theConfig.Https
-}
-
-func Domain() string {
-	return theConfig.Domain
-}
-
-func Url() string {
-	return theConfig.Url()
+func ExternalURL() url.URL {
+	return theConfig.ExternalURL
 }
 
 func Secret() string {
