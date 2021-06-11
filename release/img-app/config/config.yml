@@ -9,5 +9,6 @@ envs:
     <<: *defaults
   test:
     <<: *defaults
+    externalURL: https://example.com/home
 
 

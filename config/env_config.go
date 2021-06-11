@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"time"
@@ -12,16 +13,17 @@ import (
 )
 
 type EnvConfig struct {
-	Name        string      `yaml:"-"`
-	Env         Environment `yaml:"-"`
-	ExternalURL url.URL     `yaml:"externalURL"`
-	Secret      string      `yaml:"secret"`
-	Cookie      Cookie      `yaml:"cookie"`
+	Name           string      `yaml:"-"`
+	Env            Environment `yaml:"-"`
+	RawExternalURL string      `yaml:"externalURL"`
+	ExternalURL    *url.URL    `yaml:"-"`
+	Secret         string      `yaml:"secret"`
+	Cookie         Cookie      `yaml:"cookie"`
 
-	Mailer       string   `yaml:"mailer"`
-	Keepers      []string `yaml:"keepers"`
-	TimeZone     timeZone `yaml:"timeZone"`
-	TimeLocation *time.Location
+	Mailer       string         `yaml:"mailer"`
+	Keepers      []string       `yaml:"keepers"`
+	TimeZone     timeZone       `yaml:"timeZone"`
+	TimeLocation *time.Location `yaml:"-"`
 }
 
 // If use http.Cookie, it has no yaml tags, upper camel case is required, so define a new one.
@@ -40,9 +42,17 @@ type timeZone struct {
 func (c *EnvConfig) init(name, env string) {
 	c.Name = name
 	c.Env = NewEnv(env)
+	if c.RawExternalURL != `` {
+		if u, err := url.Parse(c.RawExternalURL); err != nil {
+			log.Fatalf("parse externalURL: %v", err)
+		} else {
+			c.ExternalURL = u
+		}
+	}
 	if c.TimeZone.Name != `` {
 		c.TimeLocation = time.FixedZone(c.TimeZone.Name, c.TimeZone.Offset)
 	}
+
 }
 
 func (c *EnvConfig) DeployName() string {

@@ -19,7 +19,7 @@ func DeployName() string {
 	return theConfig.DeployName()
 }
 
-func ExternalURL() url.URL {
+func ExternalURL() *url.URL {
 	return theConfig.ExternalURL
 }
 

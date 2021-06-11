@@ -11,3 +11,9 @@ func ExampleRoot() {
 
 	// Output: true
 }
+
+func ExampleExternalURL() {
+	fmt.Println(ExternalURL().String())
+
+	// Output: https://example.com/home
+}
