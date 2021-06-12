@@ -28,10 +28,13 @@ type EnvConfig struct {
 
 // If use http.Cookie, it has no yaml tags, upper camel case is required, so define a new one.
 type Cookie struct {
-	Name   string            `yaml:"name"`
-	Domain string            `yaml:"domain"`
-	Path   string            `yaml:"path"`
-	MaxAge duration.Duration `yaml:"maxAge"`
+	Name     string            `yaml:"name"`
+	Domain   string            `yaml:"domain"`
+	Path     string            `yaml:"path"`
+	MaxAge   duration.Duration `yaml:"maxAge"`
+	Secure   bool              `yaml:"secure"`
+	HttpOnly bool              `yaml:"httpOnly"`
+	SameSite string            `yaml:"sameSite"`
 }
 
 type timeZone struct {
@@ -52,7 +55,12 @@ func (c *EnvConfig) init(name, env string) {
 	if c.TimeZone.Name != `` {
 		c.TimeLocation = time.FixedZone(c.TimeZone.Name, c.TimeZone.Offset)
 	}
+	switch c.Cookie.SameSite {
+	case "", "lax", "strict", "none":
+	default:
+		log.Fatalf("invalid sameSite: %s", c.Cookie.SameSite)
 
+	}
 }
 
 func (c *EnvConfig) DeployName() string {
@@ -70,10 +78,23 @@ func TimestampSign(ts int64, secret string) string {
 }
 
 func (c *EnvConfig) HttpCookie() http.Cookie {
+	sameSiteMode := http.SameSiteDefaultMode
+	switch c.Cookie.SameSite {
+	case "lax":
+		sameSiteMode = http.SameSiteLaxMode
+	case "strict":
+		sameSiteMode = http.SameSiteStrictMode
+	case "none":
+		sameSiteMode = http.SameSiteNoneMode
+	}
+
 	return http.Cookie{
-		Name:   c.Cookie.Name,
-		Domain: c.Cookie.Domain,
-		Path:   c.Cookie.Path,
-		MaxAge: int(c.Cookie.MaxAge.Value / duration.Second),
+		Name:     c.Cookie.Name,
+		Domain:   c.Cookie.Domain,
+		Path:     c.Cookie.Path,
+		MaxAge:   int(c.Cookie.MaxAge.Value / duration.Second),
+		Secure:   c.Cookie.Secure,
+		HttpOnly: c.Cookie.HttpOnly,
+		SameSite: sameSiteMode,
 	}
 }
