@@ -67,6 +67,10 @@ func (c *EnvConfig) DeployName() string {
 	return c.Name + `.` + c.Env.String()
 }
 
+func (c *EnvConfig) ExternalURLIsHTTPS() bool {
+	return c.ExternalURL.Scheme == "https" // url.Parse always strings.toLower schema.
+}
+
 func (c *EnvConfig) TimestampSign(ts int64) string {
 	return TimestampSign(ts, c.Secret)
 }

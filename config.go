@@ -24,7 +24,7 @@ func ExternalURL() *url.URL {
 }
 
 func ExternalURLIsHTTPS() bool {
-	return theConfig.ExternalURL.Scheme == "https" // url.Parse always strings.toLower schema.
+	return theConfig.ExternalURLIsHTTPS()
 }
 
 func Secret() string {
