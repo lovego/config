@@ -25,7 +25,7 @@ func Dir() string {
 }
 
 func getEnv() string {
-	env := os.Getenv(`ProENV`)
+	env := os.Getenv(config.EnvVar)
 	if env == `` {
 		if strings.HasSuffix(os.Args[0], `.test`) {
 			env = `test`

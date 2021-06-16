@@ -4,6 +4,8 @@ import (
 	"strings"
 )
 
+const EnvVar = "ProENV"
+
 type Environment struct {
 	str, major, minor string
 }
@@ -69,4 +71,18 @@ func (e *Environment) ConfigDir() string {
 		name += "_" + e.major
 	}
 	return name
+}
+
+func (e *Environment) Vars() []string {
+	vars := []string{EnvVar + `=` + e.str}
+	if e.major != "" {
+		vars = append(vars, EnvVar+`_Major=`+e.major)
+	}
+	if e.minor != "" {
+		vars = append(vars, EnvVar+`_Minor=`+e.minor)
+	}
+	if e.major != "" {
+		vars = append(vars, `ProConfigDir=`+e.ConfigDir())
+	}
+	return vars
 }
