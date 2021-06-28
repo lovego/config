@@ -34,7 +34,7 @@ jobs:
       if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug }}
 
     - name: Build
-      run: go build -v ./...
+      run: go get ./... && go build -v ./...
 
     - name: Test
       run: |
