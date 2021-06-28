@@ -61,7 +61,7 @@ func NewLoggerFromWriter(writer io.Writer) *loggerPkg.Logger {
 		logger.SetLevel(loggerPkg.Debug)
 	} else {
 		logger.Set("project", Name())
-		logger.Set("env", Env())
+		logger.Set("env", Env().String())
 	}
 	return logger
 }

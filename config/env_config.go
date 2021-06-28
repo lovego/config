@@ -82,23 +82,15 @@ func TimestampSign(ts int64, secret string) string {
 }
 
 func (c *EnvConfig) HttpCookie() http.Cookie {
-	sameSiteMode := http.SameSiteDefaultMode
-	switch c.Cookie.SameSite {
-	case "lax":
-		sameSiteMode = http.SameSiteLaxMode
-	case "strict":
-		sameSiteMode = http.SameSiteStrictMode
-	case "none":
-		sameSiteMode = http.SameSiteNoneMode
-	}
-
-	return http.Cookie{
+	cookie := http.Cookie{
 		Name:     c.Cookie.Name,
 		Domain:   c.Cookie.Domain,
 		Path:     c.Cookie.Path,
 		MaxAge:   int(c.Cookie.MaxAge.Value / duration.Second),
 		Secure:   c.Cookie.Secure,
 		HttpOnly: c.Cookie.HttpOnly,
-		SameSite: sameSiteMode,
 	}
+
+	setSameSiteMode(&cookie, c.Cookie.SameSite)
+	return cookie
 }
