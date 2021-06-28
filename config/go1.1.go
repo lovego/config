@@ -1,4 +1,4 @@
-// +build g91.1,!go1.12
+// +build go1.1,!go1.12
 
 package config
 
