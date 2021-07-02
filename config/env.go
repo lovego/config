@@ -66,11 +66,15 @@ func (e *Environment) IsProduction() bool {
 }
 
 func (e *Environment) ConfigDir() string {
-	name := "config"
+	return e.TailMajor("config")
+}
+
+// tail major to str
+func (e *Environment) TailMajor(str string) string {
 	if e.major != "" {
-		name += "_" + e.major
+		return str + "_" + e.major
 	}
-	return name
+	return str
 }
 
 func (e *Environment) Vars() []string {
