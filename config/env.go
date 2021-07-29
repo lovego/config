@@ -65,6 +65,18 @@ func (e *Environment) IsProduction() bool {
 	return e.minor == `production`
 }
 
+// PreviewToProduction return a production copy if IsPreview.
+func (e *Environment) PreviewToProduction() Environment {
+	if e.IsPreview() {
+		return Environment{
+			str:   makeEnv(e.major, "production"),
+			major: e.major,
+			minor: "production",
+		}
+	}
+	return *e
+}
+
 func (e *Environment) ConfigDir() string {
 	return e.TailMajor("config")
 }
@@ -89,4 +101,11 @@ func (e *Environment) Vars() []string {
 		vars = append(vars, `ProConfigDir=`+e.ConfigDir())
 	}
 	return vars
+}
+
+func makeEnv(major, minor string) string {
+	if major == "" {
+		return minor
+	}
+	return major + "." + minor
 }
