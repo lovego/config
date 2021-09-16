@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/lovego/alarm"
 	"github.com/lovego/fs"
@@ -82,5 +81,5 @@ func getAlarm() *alarm.Alarm {
 	return alarm.New(alarm.MailSender{
 		Receivers: Keepers(),
 		Mailer:    Mailer(),
-	}, 0, 10*time.Second, time.Minute, alarm.SetPrefix(DeployName()))
+	}, nil, alarm.SetPrefix(DeployName()))
 }
