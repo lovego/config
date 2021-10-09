@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 
 	"github.com/lovego/alarm"
+	"github.com/lovego/email"
 	"github.com/lovego/fs"
 	loggerPkg "github.com/lovego/logger"
-	"github.com/lovego/mailer"
 )
 
 const isRun = "isRun"
@@ -18,7 +18,7 @@ var theMailer = getMailer()
 var theAlarm = getAlarm()
 var theLogger, theHttpLogger *loggerPkg.Logger
 
-func Mailer() *mailer.Mailer {
+func Mailer() *email.Client {
 	return theMailer
 }
 func Alarm() *alarm.Alarm {
@@ -70,8 +70,8 @@ func Protect(fn func()) {
 	fn()
 }
 
-func getMailer() *mailer.Mailer {
-	m, err := mailer.New(theConfig.Mailer)
+func getMailer() *email.Client {
+	m, err := email.NewClient(theConfig.Mailer)
 	if err != nil {
 		log.Panic(err)
 	}
