@@ -7,10 +7,10 @@ require (
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/gocql/gocql v0.0.0-20210515062232-b7ef815b4556
 	github.com/lib/pq v1.10.2
-	github.com/lovego/alarm v0.0.5
+	github.com/lovego/alarm v0.0.6
 	github.com/lovego/bsql v0.0.3
 	github.com/lovego/duration v0.0.0-20200802140436-42c773e4fb38
-	github.com/lovego/email v0.0.3
+	github.com/lovego/email v0.0.5
 	github.com/lovego/fs v0.0.2
 	github.com/lovego/logger v0.0.1
 	github.com/lovego/strmap v0.0.0-20190329135032-007683ae22da
