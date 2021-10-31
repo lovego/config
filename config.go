@@ -3,13 +3,12 @@ package config
 import (
 	"net/http"
 	"net/url"
-	"path/filepath"
 	"time"
 
 	"github.com/lovego/config/config"
 )
 
-var theConfig = config.Get(filepath.Join(Dir(), `config.yml`), Env().Major()).Get(Env().String())
+var theConfig = config.Get(FilePath(Env()), Env().String())
 
 func Name() string {
 	return theConfig.Name

@@ -2,32 +2,29 @@ package config
 
 import (
 	"log"
-	"path/filepath"
 
 	"github.com/lovego/config/config"
 	"github.com/lovego/strmap"
 )
 
-var theData = config.Data(filepath.Join(Dir(), `envs/`+Env().Minor()+`.yml`))
-
 func Get(key string) strmap.StrMap {
-	return theData.Get(key)
+	return theConfig.Data.Get(key)
 }
 
 func GetString(key string) string {
-	return theData.GetString(key)
+	return theConfig.Data.GetString(key)
 }
 
 func GetSlice(key string) []strmap.StrMap {
-	return theData.GetSlice(key)
+	return theConfig.Data.GetSlice(key)
 }
 
 func GetStringSlice(key string) []string {
-	return theData.GetStringSlice(key)
+	return theConfig.Data.GetStringSlice(key)
 }
 
 func GetDBConfig(typ, key string) interface{} {
-	v, err := config.GetDB(theData, typ, key)
+	v, err := config.GetDB(theConfig.Data, typ, key)
 	if err != nil {
 		log.Panic(v)
 	}

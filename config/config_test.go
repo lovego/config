@@ -2,11 +2,11 @@ package config
 
 import "fmt"
 
-func ExampleGetDB() {
-	strMap := Data(`../release/img-app/config/envs/test.yml`)
-	fmt.Println(GetDB(strMap, `postgres`, `test`))
+func ExampleGet() {
+	config := Get(`../release/img-app/config/test.yml`, `test`)
+	fmt.Println(GetDB(config.Data, `postgres`, `test`))
 
-	if v, err := GetDB(strMap, `postgres`, `shards`); err != nil {
+	if v, err := GetDB(config.Data, `postgres`, `shards`); err != nil {
 		fmt.Println(err)
 	} else if shards, ok := v.(*Shards); ok {
 		for _, row := range shards.Shards {
@@ -21,4 +21,9 @@ func ExampleGetDB() {
 	// {No:1 Url:postgres://postgres:@localhost/test_1?sslmode=disable}
 	// {No:2 Url:postgres://postgres:@localhost/test_2?sslmode=disable}
 	// {IdSeqIncrementBy:1000}
+}
+
+func ExampleTimestampSign() {
+	fmt.Println(TimestampSign(123, "abc"))
+	// Output: 21d9bfd0521686c89039b04bf66faf108c391e2334a371dfa51401c5e05a6e32
 }

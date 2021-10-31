@@ -1,0 +1,12 @@
+externalURL: https://example.com/home
+timeZone: { name: China, offset: 28800 }
+mailer: "mailer://smtp.exmail.qq.com:587/?user=报警<alarm@exmaple.com>&pass=123456"
+keepers: [ "小美<xiaomei-go@qq.com>" ]
+
+data:
+  postgres:
+    test: postgres://postgres:postgres@localhost/postgres?sslmode=disable
+    shards:
+      1: postgres://postgres:@localhost/test_1?sslmode=disable
+      2: postgres://postgres:@localhost/test_2?sslmode=disable
+      settings: { idSeqIncrementBy: 1000 }

@@ -11,8 +11,8 @@ import (
 )
 
 var theEnv = config.NewEnv(getEnv())
-var rootDir = getRoot()
-var configDir = filepath.Join(Root(), Env().ConfigDir())
+var rootDir = getRoot(theEnv)
+var configDir = filepath.Join(Root(), "config")
 
 func Env() *config.Environment {
 	return &theEnv
@@ -23,36 +23,43 @@ func Root() string {
 func Dir() string {
 	return configDir
 }
+func FilePath(env *config.Environment) string {
+	return filepath.Join(Dir(), env.Minor()+`.yml`)
+}
 
 func getEnv() string {
 	env := os.Getenv(config.EnvVar)
-	if env == `` {
-		if strings.HasSuffix(os.Args[0], `.test`) {
-			env = `test`
+	if env == "" {
+		if strings.HasSuffix(os.Args[0], ".test") {
+			env = "test"
 		} else {
-			env = `dev`
+			env = "dev"
 		}
 	}
 	return env
 }
 
-func getRoot() string {
-	program, err := filepath.Abs(os.Args[0])
-	if err != nil {
-		log.Panic(err)
+func getRoot(env config.Environment) string {
+	root := detectRootByExecutable(env.Minor())
+	if root == "" {
+		if release := config.DetectReleaseConfigDirOf(env.Major()); release != "" {
+			root = filepath.Join(release, "img-app")
+		}
 	}
-	configYML := Env().ConfigDir() + "/config.yml"
-	if programDir := filepath.Dir(program); fs.Exist(filepath.Join(programDir, configYML)) {
-		return programDir
+	if root == "" {
+		log.Panic("app root not found.")
 	}
+	return root
+}
 
-	cwd, err := os.Getwd()
+func detectRootByExecutable(minorEnv string) string {
+	executable, err := filepath.Abs(os.Args[0])
 	if err != nil {
 		log.Panic(err)
 	}
-	projectDir := fs.DetectDir(cwd, `release/img-app/`+configYML)
-	if projectDir == `` {
-		log.Panic(`app root not found.`)
+	executableDir := filepath.Dir(executable)
+	if fs.Exist(filepath.Join(executableDir, "config", minorEnv+".yml")) {
+		return executableDir
 	}
-	return filepath.Join(projectDir, `release/img-app`)
+	return ""
 }

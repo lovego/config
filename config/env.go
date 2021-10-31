@@ -77,18 +77,6 @@ func (e *Environment) PreviewToProduction() Environment {
 	return *e
 }
 
-func (e *Environment) ConfigDir() string {
-	return e.TailMajor("config")
-}
-
-// tail major to str
-func (e *Environment) TailMajor(str string) string {
-	if e.major != "" {
-		return str + "_" + e.major
-	}
-	return str
-}
-
 func (e *Environment) Vars() []string {
 	vars := []string{EnvVar + `=` + e.str}
 	if e.major != "" {
@@ -96,9 +84,6 @@ func (e *Environment) Vars() []string {
 	}
 	if e.minor != "" {
 		vars = append(vars, EnvVar+`_Minor=`+e.minor)
-	}
-	if e.major != "" {
-		vars = append(vars, `ProConfigDir=`+e.ConfigDir())
 	}
 	return vars
 }
