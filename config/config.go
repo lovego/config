@@ -74,6 +74,8 @@ func (c *Config) init(env string) {
 	}
 	if c.TimeZone.Name != `` {
 		c.TimeLocation = time.FixedZone(c.TimeZone.Name, c.TimeZone.Offset)
+	} else {
+		c.TimeLocation = time.Local
 	}
 	switch c.Cookie.SameSite {
 	case "", "lax", "strict", "none":

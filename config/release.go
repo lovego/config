@@ -15,7 +15,7 @@ func DetectReleaseConfigDirOf(majorEnv string) string {
 	if releaseDir == "" {
 		return ""
 	}
-	if majorEnv == "" || hasDirectContent {
+	if majorEnv == "" && hasDirectContent {
 		return releaseDir
 	}
 	if majorEnv == "" {
