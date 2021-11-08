@@ -13,7 +13,7 @@ require (
 	github.com/lovego/bsql v0.0.3
 	github.com/lovego/duration v0.0.0-20200802140436-42c773e4fb38
 	github.com/lovego/email v0.0.5
-	github.com/lovego/fs v0.0.3
+	github.com/lovego/fs v0.0.4
 	github.com/lovego/logger v0.0.3
 	github.com/lovego/strmap v0.0.0-20190329135032-007683ae22da
 	github.com/spf13/cast v1.4.1 // indirect

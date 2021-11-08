@@ -42,8 +42,8 @@ github.com/lovego/email v0.0.5/go.mod h1:Zvp/wnKBedEO1wio0X2ge2UoQ5u4sSoqqciVMZd
 github.com/lovego/errs v0.0.0-20200914124519-002655aaf593/go.mod h1:FfIOS6S5g1NZl4X4jGnY5DifiOaKOpv4N9wZXUKej8k=
 github.com/lovego/errs v0.0.5 h1:EXCp1vx5KSTXHmtRMb9beMC+Hm+y9rGiOVBeN9yRZ5o=
 github.com/lovego/errs v0.0.5/go.mod h1:ghGAxm7RQySjaQ7+H0qWei20i/KcIGsyD4XZnj4tK/0=
-github.com/lovego/fs v0.0.3 h1:HdiYufv8bZ9ZUYnDDbbbfyHKwTkTO0Ui5E5c3GRIoE0=
-github.com/lovego/fs v0.0.3/go.mod h1:rn6mRqNaC3noNNdckmOH0h9uvcka9JNvk1KbgZyh47Q=
+github.com/lovego/fs v0.0.4 h1:sMszhIilyOc/aYkTweinZYglyjwQrdeBVf6vwhlo0xc=
+github.com/lovego/fs v0.0.4/go.mod h1:rn6mRqNaC3noNNdckmOH0h9uvcka9JNvk1KbgZyh47Q=
 github.com/lovego/logger v0.0.3 h1:7rvMnfx/LPBAc1WkV70KO0hotz5m6u62aSUSrZ/HMb4=
 github.com/lovego/logger v0.0.3/go.mod h1:kAUy2TeoUGs/1TtH7GKcYUD7JG9ZD10fWZNmhAwYNKo=
 github.com/lovego/maps v0.0.0-20190404131308-5c14106deb1f/go.mod h1:7hsF4cgdpLGo+c6/0bQAKi14FnRIqmFu2bfAHKdQuG8=
