@@ -14,24 +14,35 @@ import (
 
 	"github.com/lovego/duration"
 	"github.com/lovego/strmap"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 type Config struct {
-	Name           string        `yaml:"name"`
-	RawExternalURL string        `yaml:"externalURL"`
-	Secret         string        `yaml:"secret"`
-	Cookie         Cookie        `yaml:"cookie"`
-	Mailer         string        `yaml:"mailer"`
-	Keepers        []string      `yaml:"keepers"`
-	TimeZone       timeZone      `yaml:"timeZone"`
-	Data           strmap.StrMap `yaml:"data"`
+	Name           string        `yaml:"name" json:"name"`
+	RawExternalURL string        `yaml:"externalURL" json:"externalURL"`
+	Secret         string        `yaml:"secret" json:"secret"`
+	Cookie         Cookie        `yaml:"cookie" json:"cookie"`
+	Mailer         string        `yaml:"mailer" json:"mailer"`
+	Keepers        []string      `yaml:"keepers" json:"keepers"`
+	TimeZone       timeZone      `yaml:"timeZone" json:"timeZone"`
+	Data           strmap.StrMap `yaml:"data" json:"data"`
 
-	Env          Environment    `yaml:"-"`
-	ExternalURL  *url.URL       `yaml:"-"`
-	TimeLocation *time.Location `yaml:"-"`
+	Env          Environment    `yaml:"-" json:"-"`
+	ExternalURL  *url.URL       `yaml:"-" json:"-"`
+	TimeLocation *time.Location `yaml:"-" json:"-"`
 	path         string
+
+	// 必填字段
+	ConfigCenter ConfigCenter `yaml:"configCenter" json:"configCenter" c:"配置中心"`
 }
+
+type ConfigCenter struct {
+	Secret  string `yaml:"secret" json:"secret" c:"访问密码"`
+	Addr    string `yaml:"addr" json:"addr" c:"访问地址"`
+	Project string `yaml:"project" json:"project" c:"项目"`
+	Version string `yaml:"version" json:"version" c:"版本"`
+}
+
 
 // If use http.Cookie, it has no yaml tags, upper camel case is required, so define a new one.
 type Cookie struct {
@@ -49,18 +60,30 @@ type timeZone struct {
 	Offset int    `yaml:"offset"`
 }
 
+// Get 获取配置时，支持从配置中心获取，也支持从本地文件获取
+//  获取本地配置文件中的配置中心地址，
+//  如果获取到配置中心地址，则直接从配置中心读取
+//  如果没有配置中心地址，则直接从本地文件获取
+//
 func Get(path, env string) *Config {
 	content, err := ioutil.ReadFile(path)
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	config := &Config{path: path}
 	if err := yaml.Unmarshal(content, config); err != nil {
 		log.Fatalf("parse %s: %v", path, err)
 	}
+	defer func() {
+		config.init(env)
+	}()
 
-	config.init(env)
-	return config
+	if config.ConfigCenter.Addr == "" {
+		return config
+	}
+
+	return GetCenterConfig(config.ConfigCenter, env)
 }
 
 func (c *Config) init(env string) {

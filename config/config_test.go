@@ -1,6 +1,9 @@
 package config
 
-import "fmt"
+import (
+	"fmt"
+	"testing"
+)
 
 func ExampleGet() {
 	config := Get(`../release/img-app/config/test.yml`, `test`)
@@ -26,4 +29,21 @@ func ExampleGet() {
 func ExampleTimestampSign() {
 	fmt.Println(TimestampSign(123, "abc"))
 	// Output: 21d9bfd0521686c89039b04bf66faf108c391e2334a371dfa51401c5e05a6e32
+}
+
+func TestMap(t *testing.T) {
+	data:= map[string]map[string]string{
+		"lch":{
+			"lch":"lchjczw",
+			"lch1":"lchjczw",
+		},
+	}
+
+
+	lch:=data["lch"]
+
+	lch["lch"] = "lch"
+
+	fmt.Println(data)
+
 }

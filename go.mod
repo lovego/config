@@ -1,6 +1,6 @@
 module github.com/lovego/config
 
-go 1.14
+go 1.16
 
 // replace github.com/lovego/fs => ../fs
 
@@ -11,6 +11,7 @@ require (
 	github.com/lib/pq v1.10.2
 	github.com/lovego/alarm v0.0.6
 	github.com/lovego/bsql v0.0.3
+	github.com/lovego/config_sdk v0.0.0-20211206103723-48f023930e8f
 	github.com/lovego/duration v0.0.0-20200802140436-42c773e4fb38
 	github.com/lovego/email v0.0.5
 	github.com/lovego/fs v0.0.4
@@ -18,5 +19,7 @@ require (
 	github.com/lovego/strmap v0.0.0-20190329135032-007683ae22da
 	github.com/spf13/cast v1.4.1 // indirect
 	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
-	gopkg.in/yaml.v2 v2.4.0
+	gopkg.in/yaml.v2 v2.4.0 // indirect
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
+
 )
