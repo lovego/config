@@ -5,6 +5,7 @@ import (
 	"net/url"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -25,11 +26,11 @@ func Parse(str string) URL {
 	if str := q.Get("maxIdle"); str != "" {
 		q.Del("maxIdle")
 		u.MaxIdle = parseInt(str)
-	} else if os.Getenv("ProENV") == "production" {
+	} else if strings.HasSuffix(os.Getenv("ProENV"), "production") {
 		// maxIdle equals maxOpen to prevent frequently close connection.
 		u.MaxIdle = 10
 	} else {
-		u.MaxIdle = 0
+		u.MaxIdle = 1
 	}
 
 	if str := q.Get("maxOpen"); str != "" {
