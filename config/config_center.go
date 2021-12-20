@@ -7,6 +7,14 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+
+type ConfigCenter struct {
+	Secret  string `yaml:"secret" json:"secret" c:"访问密码"`
+	Pull    string `yaml:"pull" json:"pull" c:"访问地址"`
+	Project string `yaml:"project" json:"project" c:"项目"`
+	Version string `yaml:"version" json:"version" c:"版本"`
+}
+
 func GetCenterConfig(center ConfigCenter, env string) *Config {
 	arg := go_config_sdk.Arg{
 		Project:      center.Project,
@@ -15,19 +23,19 @@ func GetCenterConfig(center ConfigCenter, env string) *Config {
 		Version:      center.Version,
 		Hash:         "",
 	}
-	config, err := go_config_sdk.GetConfig(center.Addr, center.Secret, arg)
+	config, err := go_config_sdk.GetConfig(center.Pull, center.Secret, arg)
 	if err != nil {
 		log.Fatalf(`config center:%s`, err.Error())
 	}
 
-	data, err := TranCenterToLocal(config)
+	data, err := TranRemoteToLocal(config)
 	if err != nil {
 		log.Fatalf(`config center:%s`, err.Error())
 	}
 	return data
 }
 
-func TranCenterToLocal(config *go_config_sdk.Config) (*Config, error) {
+func TranRemoteToLocal(config *go_config_sdk.Config) (*Config, error) {
 
 	content, err := yaml.Marshal(config)
 	if err != nil {

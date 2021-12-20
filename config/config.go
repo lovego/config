@@ -36,14 +36,6 @@ type Config struct {
 	ConfigCenter ConfigCenter `yaml:"configCenter" json:"configCenter" c:"配置中心"`
 }
 
-type ConfigCenter struct {
-	Secret  string `yaml:"secret" json:"secret" c:"访问密码"`
-	Addr    string `yaml:"addr" json:"addr" c:"访问地址"`
-	Project string `yaml:"project" json:"project" c:"项目"`
-	Version string `yaml:"version" json:"version" c:"版本"`
-}
-
-
 // If use http.Cookie, it has no yaml tags, upper camel case is required, so define a new one.
 type Cookie struct {
 	Name     string            `yaml:"name"`
@@ -79,7 +71,7 @@ func Get(path, env string) *Config {
 		config.init(env)
 	}()
 
-	if config.ConfigCenter.Addr == "" {
+	if config.ConfigCenter.Pull == "" {
 		return config
 	}
 
