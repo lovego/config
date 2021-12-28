@@ -82,7 +82,6 @@ func GetShardsSettings(v interface{}, path string) (*ShardsSettings, error) {
 		val = v.(map[string]interface{})
 	default:
 		return nil, fmt.Errorf("`%s.settings` should be a map, but got: %v", path, v)
-
 	}
 
 	//m = val
