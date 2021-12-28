@@ -16,7 +16,7 @@ type ConfigCenter struct {
 }
 
 func GetCenterConfig(center ConfigCenter, env string) *Config {
-	arg := go_config_sdk.Arg{
+	arg := go_config_sdk.ConfigTag{
 		Project:      center.Project,
 		Env:          env,
 		EndPointType: "server",
