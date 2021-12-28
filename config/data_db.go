@@ -67,13 +67,30 @@ func GetShards(m map[interface{}]interface{}, path string) (*Shards, error) {
 }
 
 func GetShardsSettings(v interface{}, path string) (*ShardsSettings, error) {
-	m, ok := v.(map[interface{}]interface{})
-	if !ok {
-		return nil, fmt.Errorf("`%s.settings` should be a map, but got: %v", path, v)
+	//m, ok := v.(map[string]interface{})
+	//if !ok {
+	//	return nil, fmt.Errorf("`%s.settings` should be a map, but got: %v", path, v)
+	//}
+
+	var val map[string]interface{}
+	switch v1 := v.(type) {
+	case strmap.StrMap:
+		val = (map[string]interface{})(v1)
+	case map[interface{}]interface{}:
+		val = v.(map[string]interface{})
+	case map[string]interface{}:
+		val = v.(map[string]interface{})
+	default:
+		fmt.Println(v1)
+
 	}
+
+
+	//m = val
+
 	var settings ShardsSettings
 
-	for k, v := range m {
+	for k, v := range val {
 		switch k {
 		case "idSeqIncrementBy":
 			if i, ok := v.(int); ok {
