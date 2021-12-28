@@ -6,7 +6,7 @@ import (
 )
 
 func TestGetCenterConfig(t *testing.T) {
-	config := Get(`../release/img-app/config/test.yml`, `dev`)
+	config := Get(`../release/img-app/config/test.yml`, `qa2`)
 	fmt.Println(GetDB(config.Data, `postgres`, `test`))
 
 	c := GetCenterConfig(ConfigCenter{
@@ -14,7 +14,7 @@ func TestGetCenterConfig(t *testing.T) {
 		Pull:    config.ConfigCenter.Pull,
 		Project: "erp",
 		Version: "1.0",
-	}, "dev")
+	}, "qa2")
 
 	fmt.Println(c)
 

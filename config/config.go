@@ -56,13 +56,13 @@ type timeZone struct {
 //  获取本地配置文件中的配置中心地址，
 //  如果获取到配置中心地址，则直接从配置中心读取
 //  如果没有配置中心地址，则直接从本地文件获取
-func Get(path, env string) *Config {
+func Get(path, env string) (config *Config) {
 	content, err := ioutil.ReadFile(path)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	config := &Config{path: path}
+	config = &Config{path: path}
 	if err := yaml.Unmarshal(content, config); err != nil {
 		log.Fatalf("parse %s: %v", path, err)
 	}
@@ -71,7 +71,7 @@ func Get(path, env string) *Config {
 	}()
 
 	if config.ConfigCenter.Pull == "" {
-		return config
+		return
 	}
 
 	u, err := url.Parse(config.ConfigCenter.Pull)
@@ -84,7 +84,8 @@ func Get(path, env string) *Config {
 	config.ConfigCenter.Version = u.Query().Get("version")
 
 
-	return GetCenterConfig(config.ConfigCenter, env)
+	config = GetCenterConfig(config.ConfigCenter, env)
+	return
 }
 
 func (c *Config) init(env string) {
