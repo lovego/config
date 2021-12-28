@@ -16,8 +16,7 @@ require (
 	github.com/lovego/email v0.0.5
 	github.com/lovego/fs v0.0.4
 	github.com/lovego/logger v0.0.3
-	github.com/lovego/strmap v0.0.0-20190329135032-007683ae22da
-	github.com/spf13/cast v1.4.1 // indirect
+	github.com/lovego/strmap v0.0.0-20211228093343-09d28c495476
 	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
