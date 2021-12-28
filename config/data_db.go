@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"sort"
+	"strconv"
 
 	"github.com/lovego/strmap"
 )
@@ -47,16 +48,29 @@ func GetShards(m map[interface{}]interface{}, path string) (*Shards, error) {
 			} else {
 				shardsConfig.Settings = *settings
 			}
-		} else if shardNo, ok := k.(int); ok {
-			if shardUrl, ok := v.(string); ok {
-				shardsConfig.Shards = append(shardsConfig.Shards, Shard{shardNo, shardUrl})
-			} else {
-				return nil, fmt.Errorf("`%s.%d` should be a string, but got: %v", path, k, v)
+		}
+
+		var shareNo int
+
+		switch key := k.(type) {
+		case string:
+			num, err := strconv.Atoi(key)
+			if err != nil {
+				return nil, fmt.Errorf("必须使用数字字符串")
 			}
-		} else {
+			shareNo = num
+		case int:
+			shareNo = key
+		default:
 			return nil, fmt.Errorf(
-				"`%s` invalid shard number: %v, it should be an integer.", path, k,
+				"`%s` invalid shard number : %v, it should be an string integer.", path, k,
 			)
+		}
+
+		if shardUrl, ok := v.(string); ok {
+			shardsConfig.Shards = append(shardsConfig.Shards, Shard{shareNo, shardUrl})
+		} else {
+			return nil, fmt.Errorf("`%s.%d` should be a string, but got: %v", path, k, v)
 		}
 	}
 	sort.Slice(shardsConfig.Shards, func(i, j int) bool {

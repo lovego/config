@@ -10,3 +10,8 @@ data:
       1: postgres://postgres:@localhost/test_1?sslmode=disable
       2: postgres://postgres:@localhost/test_2?sslmode=disable
       settings: { idSeqIncrementBy: 1000 }
+
+
+# 配置中心数据，只有服务端有
+configCenter:
+  pull: "https://cc-qa.threesoft.cn/config/pull?project=erp&env=qa2&version=1.0&endPointType=server&secret=123&hash="
