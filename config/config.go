@@ -56,7 +56,6 @@ type timeZone struct {
 //  获取本地配置文件中的配置中心地址，
 //  如果获取到配置中心地址，则直接从配置中心读取
 //  如果没有配置中心地址，则直接从本地文件获取
-//
 func Get(path, env string) *Config {
 	content, err := ioutil.ReadFile(path)
 	if err != nil {
