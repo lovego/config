@@ -74,6 +74,16 @@ func Get(path, env string) *Config {
 		return config
 	}
 
+	u, err := url.Parse(config.ConfigCenter.Pull)
+	if err != nil {
+		panic(err)
+	}
+
+	config.ConfigCenter.Project = u.Query().Get("project")
+	config.ConfigCenter.Secret = u.Query().Get("secret")
+	config.ConfigCenter.Version = u.Query().Get("version")
+
+
 	return GetCenterConfig(config.ConfigCenter, env)
 }
 
