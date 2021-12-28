@@ -14,4 +14,4 @@ data:
 
 # 配置中心数据，只有服务端有
 configCenter:
-  pull: "https://cc-qa.threesoft.cn/config/pull?project=erp&env=qa2&version=1.0&endPointType=server&secret=123&hash="
+  pull: "https://cc-qa.threesoft.cn/config/pull?project=erp&env=dev&version=1.0&endPointType=server&secret=123&hash="

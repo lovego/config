@@ -37,7 +37,7 @@ func GetCenterConfig(center ConfigCenter, env string) *Config {
 
 func TranRemoteToLocal(config *go_config_sdk.Config) (*Config, error) {
 
-	content, err := yaml.Marshal(config)
+	content, err := yaml.Marshal(config.Conf)
 	if err != nil {
 		return nil, err
 	}
