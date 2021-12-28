@@ -10,7 +10,7 @@ func ExampleParse() {
 	fmt.Println(u.MaxOpen, u.MaxIdle, u.MaxLife)
 	// Output:
 	// postgres://develop:@localhost/goods_orders_dev?sslmode=disable
-	// 10 0 10m0s
+	// 10 1 10m0s
 }
 
 func ExampleParse_withParams() {
