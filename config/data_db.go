@@ -75,7 +75,7 @@ func GetShardsSettings(v interface{}, path string) (*ShardsSettings, error) {
 	var val map[string]interface{}
 	switch v1 := v.(type) {
 	case strmap.StrMap:
-		val = (map[string]interface{})(v1)
+		val = v1
 	case map[interface{}]interface{}:
 		val = v.(map[string]interface{})
 	case map[string]interface{}:
