@@ -16,6 +16,8 @@ func TestGetCenterConfig(t *testing.T) {
 		Version: "1.0",
 	}, "qa2")
 
+
+
 	fmt.Println(c)
 
 }
