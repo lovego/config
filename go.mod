@@ -2,8 +2,7 @@ module github.com/lovego/config
 
 go 1.16
 
-// replace github.com/lovego/fs => ../fs
-
+ //replace github.com/lovego/fs => ../fs
 require (
 	github.com/garyburd/redigo v1.6.2
 	github.com/go-sql-driver/mysql v1.6.0
