@@ -40,9 +40,9 @@ type Shard struct {
 	Url string
 }
 
-func (s Shard) GetNo() int {
+func (s Shard) GetNo() int16 {
 	i, _ := strconv.Atoi(s.No)
-	return i
+	return int16(i)
 }
 
 type ShardsSettings struct {
