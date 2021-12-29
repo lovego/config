@@ -1,6 +1,7 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"sort"
 	"strconv"
@@ -40,9 +41,17 @@ type Shard struct {
 	Url string
 }
 
-func (s Shard) GetNo() int16 {
-	i, _ := strconv.Atoi(s.No)
-	return int16(i)
+func (s Shard) GetNo() (int16,error) {
+	i, err := strconv.Atoi(s.No)
+	if err != nil {
+		return 0, err
+	}
+
+	if i == 0 {
+		return 0, errors.New("分片号不能为0")
+	}
+
+	return int16(i),nil
 }
 
 type ShardsSettings struct {
