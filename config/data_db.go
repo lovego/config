@@ -18,6 +18,11 @@ func GetDB(configMap strmap.StrMap, typ, key string) (interface{}, error) {
 		return value, nil
 	case map[interface{}]interface{}:
 		return GetShards(value, typ+`.`+key)
+	case map[string]interface{}:
+		return GetShardsNew(value, typ+`.`+key)
+	case strmap.StrMap:
+		var val map[string]interface{} = value
+		return GetShardsNew(val, typ+`.`+key)
 	default:
 		return nil, fmt.Errorf(
 			"db config `%s.%s` should be a string or map, but got: %v", typ, key, v,
@@ -31,8 +36,13 @@ type Shards struct {
 }
 
 type Shard struct {
-	No  int
+	No  string
 	Url string
+}
+
+func (s Shard) GetNo() int {
+	i, _ := strconv.Atoi(s.No)
+	return i
 }
 
 type ShardsSettings struct {
@@ -50,17 +60,15 @@ func GetShards(m map[interface{}]interface{}, path string) (*Shards, error) {
 			}
 		}
 
-		var shareNo int
+		var shareNo string
 
 		switch key := k.(type) {
 		case string:
-			num, err := strconv.Atoi(key)
-			if err != nil {
-				return nil, fmt.Errorf("必须使用数字字符串")
+			if IsStringNumber(key) {
+				shareNo = key
 			}
-			shareNo = num
 		case int:
-			shareNo = key
+			shareNo = strconv.Itoa(key)
 		default:
 			return nil, fmt.Errorf(
 				"`%s` invalid shard number : %v, it should be an string integer.", path, k,
@@ -80,6 +88,46 @@ func GetShards(m map[interface{}]interface{}, path string) (*Shards, error) {
 	return &shardsConfig, nil
 }
 
+func IsStringNumber(key string) bool {
+	i, err := strconv.Atoi(key)
+	if err != nil {
+		return false
+	}
+	if i == 0 {
+		return false
+	}
+
+	return true
+}
+
+func GetShardsNew(m map[string]interface{}, path string) (*Shards, error) {
+	var shardsConfig Shards
+	for k, v := range m {
+		if k == "settings" {
+			if settings, err := GetShardsSettings(v, path); err != nil {
+				return nil, err
+			} else {
+				shardsConfig.Settings = *settings
+			}
+		}
+
+		if IsStringNumber(k) {
+			var shareNo = k
+
+			if shardUrl, ok := v.(string); ok {
+				shardsConfig.Shards = append(shardsConfig.Shards, Shard{shareNo, shardUrl})
+			} else {
+				return nil, fmt.Errorf("`%s.%s` should be a string, but got: %v", path, k, v)
+			}
+		}
+
+	}
+	sort.Slice(shardsConfig.Shards, func(i, j int) bool {
+		return shardsConfig.Shards[i].No < shardsConfig.Shards[j].No
+	})
+
+	return &shardsConfig, nil
+}
 func GetShardsSettings(v interface{}, path string) (*ShardsSettings, error) {
 	//m, ok := v.(map[string]interface{})
 	//if !ok {

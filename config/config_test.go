@@ -6,7 +6,7 @@ import (
 )
 
 func ExampleGet() {
-	config := Get(`../release/img-app/config/test.yml`, `test`)
+	config := Get(`../release/img-app/config/test.yml`, `dev`)
 	fmt.Println(GetDB(config.Data, `postgres`, `test`))
 
 	if v, err := GetDB(config.Data, `postgres`, `shards`); err != nil {
