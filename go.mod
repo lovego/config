@@ -10,7 +10,7 @@ require (
 	github.com/lib/pq v1.10.2
 	github.com/lovego/alarm v0.0.6
 	github.com/lovego/bsql v0.0.3
-	github.com/lovego/config_sdk/go_config_sdk v0.0.0-20211229064151-08ad620e7e54
+	github.com/lovego/config_sdk/go_config_sdk v0.0.0-20211229081009-5e3148dda5bd
 	github.com/lovego/duration v0.0.0-20200802140436-42c773e4fb38
 	github.com/lovego/email v0.0.5
 	github.com/lovego/fs v0.0.4
