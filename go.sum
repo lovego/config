@@ -35,6 +35,8 @@ github.com/lovego/config_sdk/go_config_sdk v0.0.0-20211228111355-e2741134ab8e h1
 github.com/lovego/config_sdk/go_config_sdk v0.0.0-20211228111355-e2741134ab8e/go.mod h1:QNTCfEEqCFJJZpX3RrWtqphpqzBrgUce5FjLreIQQWw=
 github.com/lovego/config_sdk/go_config_sdk v0.0.0-20211229060851-2ae35003716d h1:lU71IMr53fg35+T1yOjf6Iyo4x7J6pFjcJiiC/hzsaM=
 github.com/lovego/config_sdk/go_config_sdk v0.0.0-20211229060851-2ae35003716d/go.mod h1:QNTCfEEqCFJJZpX3RrWtqphpqzBrgUce5FjLreIQQWw=
+github.com/lovego/config_sdk/go_config_sdk v0.0.0-20211229064151-08ad620e7e54 h1:Nb24Veobf8uZgJUsle04m3qPD6h8g6yeanoOEtn8DZc=
+github.com/lovego/config_sdk/go_config_sdk v0.0.0-20211229064151-08ad620e7e54/go.mod h1:QNTCfEEqCFJJZpX3RrWtqphpqzBrgUce5FjLreIQQWw=
 github.com/lovego/date v0.0.0-20200911055540-3565a62cb479 h1:74DRkcosqy8d0qQdUgdXo7HlmqbCa0pV2eoCM7lQT7U=
 github.com/lovego/date v0.0.0-20200911055540-3565a62cb479/go.mod h1:dHef61fZ3P8JwWJvgK600bob+q2Guy1DnexxaXSqgNo=
 github.com/lovego/deep v0.0.0-20181026090555-43e991e46ed7 h1:KL642hJa42mH7BeOmgH1cD0Tq/9hMYZeSZWYUoyJTnc=
