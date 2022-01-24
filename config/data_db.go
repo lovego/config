@@ -1,7 +1,6 @@
 package config
 
 import (
-	"errors"
 	"fmt"
 	"sort"
 	"strconv"
@@ -20,10 +19,9 @@ func GetDB(configMap strmap.StrMap, typ, key string) (interface{}, error) {
 	case map[interface{}]interface{}:
 		return GetShards(value, typ+`.`+key)
 	case map[string]interface{}:
-		return GetShardsNew(value, typ+`.`+key)
+		return GetShards2(value, typ+`.`+key)
 	case strmap.StrMap:
-		var val map[string]interface{} = value
-		return GetShardsNew(val, typ+`.`+key)
+		return GetShards2(map[string]interface{}(value), typ+`.`+key)
 	default:
 		return nil, fmt.Errorf(
 			"db config `%s.%s` should be a string or map, but got: %v", typ, key, v,
@@ -37,21 +35,8 @@ type Shards struct {
 }
 
 type Shard struct {
-	No  string
+	No  int
 	Url string
-}
-
-func (s Shard) GetNo() (int16,error) {
-	i, err := strconv.Atoi(s.No)
-	if err != nil {
-		return 0, err
-	}
-
-	if i == 0 {
-		return 0, errors.New("分片号不能为0")
-	}
-
-	return int16(i),nil
 }
 
 type ShardsSettings struct {
@@ -59,90 +44,64 @@ type ShardsSettings struct {
 }
 
 func GetShards(m map[interface{}]interface{}, path string) (*Shards, error) {
-	var shardsConfig Shards
+	var shards = &Shards{}
 	for k, v := range m {
-		if k == "settings" {
-			if settings, err := GetShardsSettings(v, path); err != nil {
-				return nil, err
-			} else {
-				shardsConfig.Settings = *settings
-			}
+		if err := parseShard(shards, k, v, path); err != nil {
+			return nil, err
 		}
+	}
+	sort.Slice(shards.Shards, func(i, j int) bool {
+		return shards.Shards[i].No < shards.Shards[j].No
+	})
+	return shards, nil
+}
 
-		var shareNo string
-
-		switch key := k.(type) {
-		case string:
-			if IsStringNumber(key) {
-				shareNo = key
-			}
-		case int:
-			shareNo = strconv.Itoa(key)
-		default:
-			return nil, fmt.Errorf(
-				"`%s` invalid shard number : %v, it should be an string integer.", path, k,
-			)
+func GetShards2(m map[string]interface{}, path string) (*Shards, error) {
+	var shards = &Shards{}
+	for k, v := range m {
+		if err := parseShard(shards, k, v, path); err != nil {
+			return nil, err
 		}
+	}
+	sort.Slice(shards.Shards, func(i, j int) bool {
+		return shards.Shards[i].No < shards.Shards[j].No
+	})
+	return shards, nil
+}
 
-		if shardUrl, ok := v.(string); ok {
-			shardsConfig.Shards = append(shardsConfig.Shards, Shard{shareNo, shardUrl})
+func parseShard(shards *Shards, k, v interface{}, path string) error {
+	if k == "settings" {
+		if settings, err := GetShardsSettings(v, path); err != nil {
+			return err
 		} else {
-			return nil, fmt.Errorf("`%s.%d` should be a string, but got: %v", path, k, v)
+			shards.Settings = settings
+			return nil
 		}
 	}
-	sort.Slice(shardsConfig.Shards, func(i, j int) bool {
-		return shardsConfig.Shards[i].No < shardsConfig.Shards[j].No
-	})
 
-	return &shardsConfig, nil
-}
-
-func IsStringNumber(key string) bool {
-	i, err := strconv.Atoi(key)
-	if err != nil {
-		return false
-	}
-	if i == 0 {
-		return false
-	}
-
-	return true
-}
-
-func GetShardsNew(m map[string]interface{}, path string) (*Shards, error) {
-	var shardsConfig Shards
-	for k, v := range m {
-		if k == "settings" {
-			if settings, err := GetShardsSettings(v, path); err != nil {
-				return nil, err
-			} else {
-				shardsConfig.Settings = *settings
-			}
+	var shardNo int
+	switch key := k.(type) {
+	case string:
+		if i, err := strconv.Atoi(key); err != nil {
+			return fmt.Errorf("`%s` invalid shard number: %v, it should be an integer.", path, k)
+		} else {
+			shardNo = i
 		}
-
-		if IsStringNumber(k) {
-			var shareNo = k
-
-			if shardUrl, ok := v.(string); ok {
-				shardsConfig.Shards = append(shardsConfig.Shards, Shard{shareNo, shardUrl})
-			} else {
-				return nil, fmt.Errorf("`%s.%s` should be a string, but got: %v", path, k, v)
-			}
-		}
-
+	case int:
+		shardNo = key
+	default:
+		return fmt.Errorf("`%s` invalid shard number: %v, it should be an integer.", path, k)
 	}
-	sort.Slice(shardsConfig.Shards, func(i, j int) bool {
-		return shardsConfig.Shards[i].No < shardsConfig.Shards[j].No
-	})
 
-	return &shardsConfig, nil
+	if shardUrl, ok := v.(string); ok {
+		shards.Shards = append(shards.Shards, Shard{shardNo, shardUrl})
+	} else {
+		return fmt.Errorf("`%s.%d` should be a string, but got: %v", path, k, v)
+	}
+	return nil
 }
-func GetShardsSettings(v interface{}, path string) (*ShardsSettings, error) {
-	//m, ok := v.(map[string]interface{})
-	//if !ok {
-	//	return nil, fmt.Errorf("`%s.settings` should be a map, but got: %v", path, v)
-	//}
 
+func GetShardsSettings(v interface{}, path string) (ShardsSettings, error) {
 	var val map[string]interface{}
 	switch v1 := v.(type) {
 	case strmap.StrMap:
@@ -152,10 +111,8 @@ func GetShardsSettings(v interface{}, path string) (*ShardsSettings, error) {
 	case map[string]interface{}:
 		val = v.(map[string]interface{})
 	default:
-		return nil, fmt.Errorf("`%s.settings` should be a map, but got: %v", path, v)
+		return ShardsSettings{}, fmt.Errorf("`%s.settings` should be a map, but got: %v", path, v)
 	}
-
-	//m = val
 
 	var settings ShardsSettings
 
@@ -166,8 +123,8 @@ func GetShardsSettings(v interface{}, path string) (*ShardsSettings, error) {
 				settings.IdSeqIncrementBy = i
 			}
 		default:
-			return nil, fmt.Errorf("`%s.settings` unexpected key: %v", path, k)
+			return ShardsSettings{}, fmt.Errorf("`%s.settings` unexpected key: %v", path, k)
 		}
 	}
-	return &settings, nil
+	return settings, nil
 }
