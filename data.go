@@ -26,7 +26,7 @@ func GetStringSlice(key string) []string {
 func GetDBConfig(typ, key string) interface{} {
 	v, err := config.GetDB(theConfig.Data, typ, key)
 	if err != nil {
-		log.Panic(v)
+		log.Panic(err)
 	}
 	return v
 }
