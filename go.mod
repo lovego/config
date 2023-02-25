@@ -21,7 +21,7 @@ require (
 	github.com/lovego/tracer v0.0.2 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/shopspring/decimal v1.3.1 // indirect
-	golang.org/x/sys v0.0.0-20220111092808-5a964db01320 // indirect
+	golang.org/x/sys v0.1.0 // indirect
 	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
