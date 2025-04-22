@@ -6,6 +6,7 @@ import (
 
 	"github.com/garyburd/redigo/redis"
 	"github.com/lovego/config"
+	"github.com/lovego/config/db/dburl"
 )
 
 var dbs = struct {
@@ -29,14 +30,15 @@ func Get(dbAddr string) *redis.Pool {
 	return db
 }
 
-func New(dbUrl string) *redis.Pool {
+func New(dbAddr string) *redis.Pool {
+	dbUrl := dburl.Parse(dbAddr)
 	return &redis.Pool{
-		MaxIdle:     32,
-		MaxActive:   128,
+		MaxIdle:     dbUrl.MaxIdle,
+		MaxActive:   dbUrl.MaxOpen,
 		IdleTimeout: 600 * time.Second,
 		Dial: func() (redis.Conn, error) {
 			return redis.DialURL(
-				dbUrl,
+				dbUrl.URL.String(),
 				redis.DialConnectTimeout(3*time.Second),
 				redis.DialReadTimeout(3*time.Second),
 				redis.DialWriteTimeout(3*time.Second),
