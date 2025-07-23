@@ -2,6 +2,8 @@ package config
 
 import (
 	"fmt"
+	"log"
+	"net/url"
 	"sort"
 	"strconv"
 
@@ -35,8 +37,9 @@ type Shards struct {
 }
 
 type Shard struct {
-	No  int
-	Url string
+	DbAddr string
+	No     int
+	Url    string
 }
 
 type ShardsSettings struct {
@@ -94,7 +97,15 @@ func parseShard(shards *Shards, k, v interface{}, path string) error {
 	}
 
 	if shardUrl, ok := v.(string); ok {
-		shards.Shards = append(shards.Shards, Shard{shardNo, shardUrl})
+		u, err := url.Parse(shardUrl)
+		if err != nil {
+			log.Panic(err)
+		}
+		shards.Shards = append(shards.Shards, Shard{
+			DbAddr: u.Host,
+			No:     shardNo,
+			Url:    shardUrl,
+		})
 	} else {
 		return fmt.Errorf("`%s.%d` should be a string, but got: %v", path, k, v)
 	}

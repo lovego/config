@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"testing"
 )
 
 func ExampleGet() {
@@ -21,29 +20,12 @@ func ExampleGet() {
 	}
 	// Output:
 	// postgres://postgres:postgres@localhost/postgres?sslmode=disable <nil>
-	// {No:1 Url:postgres://postgres:@localhost/test_1?sslmode=disable}
-	// {No:2 Url:postgres://postgres:@localhost/test_2?sslmode=disable}
+	// {DbAddr:localhost No:1 Url:postgres://postgres:@localhost/test_1?sslmode=disable}
+	// {DbAddr:localhost No:2 Url:postgres://postgres:@localhost/test_2?sslmode=disable}
 	// {IdSeqIncrementBy:1000}
 }
 
 func ExampleTimestampSign() {
 	fmt.Println(TimestampSign(123, "abc"))
 	// Output: 21d9bfd0521686c89039b04bf66faf108c391e2334a371dfa51401c5e05a6e32
-}
-
-func TestMap(t *testing.T) {
-	data:= map[string]map[string]string{
-		"lch":{
-			"lch":"lchjczw",
-			"lch1":"lchjczw",
-		},
-	}
-
-
-	lch:=data["lch"]
-
-	lch["lch"] = "lch"
-
-	fmt.Println(data)
-
 }
